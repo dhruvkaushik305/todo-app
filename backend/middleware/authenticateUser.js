@@ -1,4 +1,4 @@
-const { jwt_password } = require("../../config");
+const { jwt_password } = require("../config");
 const jwt = require("jsonwebtoken");
 const { User } = require("../db");
 module.exports = (req, res, next) => {

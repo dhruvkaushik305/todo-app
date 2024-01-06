@@ -1,4 +1,4 @@
-const { updateTodo } = require("../../types");
+const { updateTodo } = require("../types");
 
 module.exports = (req, res, next) => {
   const id = updateTodo.safeParse(req.body);

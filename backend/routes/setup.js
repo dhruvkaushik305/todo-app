@@ -1,7 +1,7 @@
 const { Router } = require("express");
 const { User } = require("../db");
 const jwt = require("jsonwebtoken");
-const { jwt_password } = require("../../config");
+const { jwt_password } = require("../config");
 const verifyUser = require("../middleware/verifyUser");
 const router = Router();
 router.get("/signup", verifyUser, (req, res) => {

@@ -3,7 +3,7 @@ const app = express();
 const cors = require("cors");
 const setupRouter = require("./routes/setup");
 const todoRouter = require("./routes/todo");
-const { port } = require("../config");
+const { port } = require("./config");
 //Standard middlewares
 app.use(express.json());
 app.use(cors());

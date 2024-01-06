@@ -1,4 +1,4 @@
-const { createTodo } = require("../../types");
+const { createTodo } = require("../types");
 module.exports = (req, res, next) => {
   const todo = createTodo.safeParse(req.body);
   if (!todo.success) {

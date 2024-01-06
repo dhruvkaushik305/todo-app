@@ -1,4 +1,4 @@
-const { userValid } = require("../../types");
+const { userValid } = require("../types");
 module.exports = (req, res, next) => {
   const credentials = userValid.safeParse(req.body);
   if (!credentials.success) {
