@@ -1,20 +1,13 @@
-export function Todos({ todos }) {
-  // console.log({ todos });
+import { CreateTodo } from "./CreateTodo";
+import { Display } from "./Display";
+
+export function Todos() {
   return (
     <div>
-      {todos.map((todo) => {
-        return (
-          <div>
-            <h1>{todo.title}</h1>
-            <h2>{todo.description}</h2>
-            {todo.completed == false ? (
-              <button>Mark as completed</button>
-            ) : (
-              <div>Completed</div>
-            )}
-          </div>
-        );
-      })}
+      <Display />
+      <br></br>
+      <br></br>
+      <CreateTodo />
     </div>
   );
 }

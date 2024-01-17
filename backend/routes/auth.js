@@ -1,10 +1,11 @@
 const { Router } = require("express");
+require("dotenv").config();
 const { User } = require("../db");
 const jwt = require("jsonwebtoken");
-const { jwt_password } = require("../config");
 const verifyUser = require("../middleware/verifyUser");
 const router = Router();
-router.get("/signup", verifyUser, (req, res) => {
+//These routes will also validate the email and password
+router.post("/signup", verifyUser, (req, res) => {
   User.create({
     email: req.body.email,
     password: req.body.password,
@@ -13,7 +14,7 @@ router.get("/signup", verifyUser, (req, res) => {
     res.status(201).json({ msg: "User registered" });
   });
 });
-router.get("/signin", verifyUser, (req, res) => {
+router.post("/signin", verifyUser, (req, res) => {
   //check if exists in database
   const user = User.findOne({
     email: req.body.email,
@@ -23,7 +24,9 @@ router.get("/signin", verifyUser, (req, res) => {
       //user exists
       res
         .status(201)
-        .json({ token: jwt.sign({ email: user.email }, jwt_password) });
+        .json({
+          token: jwt.sign({ email: user.email }, process.env.jwt_password),
+        });
     } else {
       return res
         .status(401)

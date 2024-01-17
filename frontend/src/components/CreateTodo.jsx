@@ -1,55 +1,46 @@
-import React from "react";
+import { useState } from "react";
+
 export function CreateTodo() {
-  const [title, setTitle] = React.useState("");
-  const [description, setDescription] = React.useState("");
+  const [todo, setTodo] = useState({
+    title: "",
+    description: "",
+  });
+  function changeHandler(event) {
+    setTodo({ ...todo, [event.target.className]: event.target.value });
+  }
+  async function createTodo() {
+    const response = await fetch("http://localhost:3000/todo/add", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        authorization: localStorage.getItem("authorization"),
+      },
+      body: JSON.stringify(todo),
+    });
+    const json = await response.json();
+    console.log(json.msg);
+  }
   return (
     <div>
       <input
+        className="title"
         type="text"
-        placeholder="title"
-        value={title}
-        onChange={(event) => {
-          // console.log(event);
-          setTitle(event.target.value);
-          // console.log(title);
-        }}
-      />{" "}
-      <br></br>
+        placeholder="enter some title"
+        onChange={changeHandler}
+        value={todo.title}
+      />
+      <br />
+      <br />
       <input
+        className="description"
         type="text"
-        placeholder="description"
-        value={description}
-        onChange={(event) => {
-          setDescription(event.target.value);
-        }}
-      />{" "}
-      <br></br>
-      <button
-        onClick={() => {
-          console.log(title);
-          console.log(description);
-          // fetch("http://localhost:3000/todo", {
-          //   method: "POST",
-          //   headers: {
-          //     "Content-Type": "application/json",
-          //     // "Content-Length": 50,
-          //   },
-          //   body: JSON.stringify({
-          //     title: title,
-          //     description: description,
-          //   }),
-          // })
-          // .then(() => {
-          //   console.log("todo-added");
-          //   // alert("Todo added");
-          // })
-          // .catch((err) => {
-          //   console.log(err);
-          // });
-        }}
-      >
-        Add todo
-      </button>
+        placeholder="enter some description"
+        onChange={changeHandler}
+        value={todo.description}
+      />
+      <br />
+      <br />
+      <button onClick={createTodo}>Create todo</button>
     </div>
   );
 }
