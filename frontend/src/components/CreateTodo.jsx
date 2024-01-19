@@ -1,10 +1,11 @@
 import { useState } from "react";
+import { useRecoilState, useSetRecoilState } from "recoil";
+import { todoAtom } from "../store/atoms/todo";
+import { todosAtom } from "../store/atoms/todos";
 
 export function CreateTodo() {
-  const [todo, setTodo] = useState({
-    title: "",
-    description: "",
-  });
+  const setTodos = useSetRecoilState(todosAtom);
+  const [todo, setTodo] = useRecoilState(todoAtom);
   function changeHandler(event) {
     setTodo({ ...todo, [event.target.className]: event.target.value });
   }
@@ -19,6 +20,14 @@ export function CreateTodo() {
     });
     const json = await response.json();
     console.log(json.msg);
+    const newTodo = {
+      title: todo.title,
+      description: todo.description,
+      completed: false,
+    };
+    setTodos((old) => {
+      return [...old, newTodo];
+    });
   }
   return (
     <div>

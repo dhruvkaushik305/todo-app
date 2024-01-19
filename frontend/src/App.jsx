@@ -1,16 +1,13 @@
 // import './App.css'
-
-import { useState } from "react";
-import { Signin } from "./components/Signin";
-import { Signup } from "./components/signup";
-import { Todos } from "./components/Todos";
+import { RecoilRoot } from "recoil";
+import { TodoApp } from "./components/TodoApp";
 
 function App() {
-  const [signed, setSigned] = useState(false);
   return (
     <>
-      {signed ? <Todos /> : <Signin setter={setSigned} />}
-      {/* <Signup /> */}
+      <RecoilRoot>
+        <TodoApp />
+      </RecoilRoot>
     </>
   );
 }

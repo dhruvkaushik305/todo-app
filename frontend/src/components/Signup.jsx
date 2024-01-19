@@ -1,10 +1,8 @@
-import { useState } from "react";
+import { useRecoilState } from "recoil";
+import { credentialsAtom } from "../store/atoms/credentials";
 
 export function Signup() {
-  const [credentials, setCredentials] = useState({
-    email: "",
-    password: "",
-  });
+  const [credentials, setCredentials] = useRecoilState(credentialsAtom);
   function changeHandler(event) {
     setCredentials({
       ...credentials,
@@ -21,6 +19,9 @@ export function Signup() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(credentials),
     });
+    if (response.status == 401) {
+      alert("User already exists, please sign in!");
+    }
     response = await response.json();
     console.log(response);
   }

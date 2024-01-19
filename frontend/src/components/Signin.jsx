@@ -1,10 +1,12 @@
-import { useState } from "react";
+import { useRecoilState, useSetRecoilState } from "recoil";
+import { credentialsAtom } from "../store/atoms/credentials";
+import { loggingAtom } from "../store/atoms/logging";
+import { useNavigate } from "react-router-dom";
 
-export function Signin({ setter }) {
-  const [credentials, setCredentials] = useState({
-    email: "",
-    password: "",
-  });
+export function Signin() {
+  const navigator = useNavigate();
+  const setter = useSetRecoilState(loggingAtom);
+  const [credentials, setCredentials] = useRecoilState(credentialsAtom);
   function changeHandler(event) {
     setCredentials({
       ...credentials,
@@ -21,10 +23,15 @@ export function Signin({ setter }) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(credentials),
     });
-    response = await response.json();
+    if (response.status == 401) {
+      alert("user does not exist, please sign up!");
+    } else {
+      const result = await response.json();
+      localStorage.setItem("authorization", "bearer " + result.token);
+      setter(true);
+      navigator("/");
+    }
     // console.log(response);
-    setter(true);
-    localStorage.setItem("authorization", "bearer " + response.token);
   }
   return (
     <div>

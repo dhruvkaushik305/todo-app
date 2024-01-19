@@ -1,21 +1,20 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { useRecoilState } from "recoil";
+import { todosAtom } from "../store/atoms/todos";
 
 export function Display() {
-  const [todos, setTodos] = useState([]);
+  const [todos, setTodos] = useRecoilState(todosAtom);
   useEffect(() => {
-    setInterval(() => {
-      fetch("http://localhost:3000/todo/list", {
-        method: "GET",
-        headers: {
-          authorization: localStorage.getItem("authorization"),
-        },
-      }).then(async (response) => {
-        const json = await response.json();
-        setTodos(json.todos);
-      });
-    }, 100);
+    fetch("http://localhost:3000/todo/list", {
+      method: "GET",
+      headers: {
+        authorization: localStorage.getItem("authorization"),
+      },
+    }).then(async (response) => {
+      const json = await response.json();
+      setTodos(json.todos);
+    });
   }, []);
-  //   console.log(todos);
   async function markCompleted(event) {
     const response = await fetch("http://localhost:3000/todo/complete", {
       method: "PUT",
@@ -27,7 +26,6 @@ export function Display() {
     });
     const json = await response.json();
     console.log(json.msg);
-    // console.log(event.target.id);
   }
   return (
     <div>
